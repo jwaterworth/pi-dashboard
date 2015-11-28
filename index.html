@@ -1,88 +1,35 @@
 <html>
 	<head>
-		<style>
-			html {
-				background: red;
-				color: white;
-				text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-				font-family: ‘Palatino Linotype’, ‘Book Antiqua’, Palatino, serif;
-			}
-		
-			img.bg {
-				/* Set rules to fill background */
-				min-height: 100%;
-				min-width: 1024px;
-
-				/* Set up proportionate scaling */
-				width: 100%;
-				height: auto;
-
-				/* Set up positioning */
-				position: fixed;
-				top: 0;
-				left: 0;
-			  
-				/* Set up transissions for changing image */		
-				opacity: 0;
-				transition: opacity 1s ease-in-out;
-				-moz-transition: opacity 1s ease-in-out;
-				-webkit-transition: opacity 1s ease-in-out;					
-			}
-			
-			img.bg.current {
-				opacity: 1;
-			}
-			
-			img.bg.preload {
-				opacity: 0;
-			}
-			
-			#contents {
-				position: fixed;
-				bottom: 20px;
-				right: 20px;
-			}
-			
-		</style>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-		<script>
-			var cached = 'images/lincoln.jpg';
-		
-			$(document).ready(function() {
-				setInterval(function() {		
-					var $preload = $('.bg.preload');
-					var $current = $('.bg.current');
-					var $backup = $('.bg.backup');
-				
-					//preload -> current
-					$preload.addClass('current').removeClass('preload');
-					
-					setTimeout(function($current, $backup) {
-						return function() {
-							//current -> backup
-							$current.addClass('backup').removeClass('current');
-							//backup -> preload
-							$backup.addClass('preload').removeClass('backup');	
-							//add a new one into the mix
-							var temp = $backup.prop('src');
-							$backup.prop('src', cached);							
-							cached = temp;
-						}					
-					}($current, $backup), 1000);
-				}, 3000);
-			});
-		</script>
+		<link rel="stylesheet" type="text/css" href="styles/styles.css">
 	</head>
 	<body>
 		<div id="images">
-			<img class="bg preload" alt="loading" src="images/london.jpg"/>
-			<img class="bg current" alt="loading" src="images/newark_hall.jpg" />
-			<img class="bg backup" alt="loading" src="images/wisby.jpg" />
+			<img class="bg preload" alt="loading" src="images/firs.jpg"/>
+			<img class="bg current" alt="loading" src="images/newark.jpg" />
+			<img class="bg backup" alt="loading" src="images/wheel.jpg" />
 		</div>
-		<div id="contents">
-			<h1>22:07</h1>
-			<h2>24/11/2015</h2>
-			<span>Temperature: 18C</span>
+		<div class="container">		
+			<div id="mainCards" data-bind="template: { name: 'CardTemplate', foreach: mainCards}">				
+			</div>
+			<div id="supplementaryCards" data-bind="template: { name: 'CardTemplate', foreach: supplementaryCards}">				
+			</div>
+		</div>
 		</div>
 	</body>
+	<!-- Templates -->
+	<!-- Card Template -->
+	<script type="text/html" id="CardTemplate">
+		<div class="card" data-bind="template: templateName ">			
+		</div>
+	</script>
+	
+	<!-- Time Card Contents -->
+	<script type="text/html" id="TimeCardTemplate">
+		<h2 data-bind="text: time"></h2>
+		<h3 data-bind="text: date"></h3>
+	</script>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="scripts/knockout-3.4.0.js"></script>
+	<script src="scripts/script.js"></script>
 </html>
