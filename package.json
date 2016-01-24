@@ -1,0 +1,21 @@
+{
+  "name": "pi-dashboard",
+  "version": "1.0.0",
+  "dependencies": {
+    "gulp": "*",
+    "gulp-clean": "^0.3.1",
+    "gulp-concat": "*",
+    "gulp-jshint": "^2.0.0",
+    "gulp-livereload": "*",
+    "gulp-minify-css": "^1.2.3",
+    "gulp-rename": "*",
+    "gulp-ruby-sass": "*",
+    "gulp-uglify": "*",
+    "gulp-util": "*",
+    "gulp-watch": "*",
+    "map-stream": "*"
+  },
+  "devDependencies": {
+    "gulp-autoprefixer": "^3.1.0"
+  }
+}
