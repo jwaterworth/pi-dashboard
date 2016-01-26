@@ -1,0 +1,110 @@
+html {
+	background: #cccccc;
+	color: white;
+	/*text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;*/
+	font-family: arial;
+}
+
+.bg {
+	/* Set rules to fill background */
+	min-height: 100%;
+	min-width: 1024px;
+
+	/* Set up proportionate scaling */
+	width: 100%;
+	height: auto;
+
+	/* Set up positioning */
+	position: fixed;
+	top: 0;
+	left: 0;
+  
+	/* Set up transissions for changing image */		
+	opacity: 0;
+	transition: opacity 1s ease-in-out;
+	-moz-transition: opacity 1s ease-in-out;
+	-webkit-transition: opacity 1s ease-in-out;					
+
+
+    &.current {
+	    opacity: 1;
+    }
+
+    &.preload {
+        opacity: 0;
+    }
+}
+
+.container {
+	position: fixed;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+}
+
+.card {
+    height: 200px;
+	width: 100%;
+    padding: 10px;
+    margin: 10px;  
+    border: 1px solid #666;
+    
+    & h2, & h3 {
+        margin: 5px;
+    }
+    
+    & .header {
+        height: calc(20% - 1px);
+        width: 100%;
+        background-color: #e7e7e7;
+        border-bottom: 1px solid #666;
+    }
+
+    & .body {
+        height: 80%;
+        width: 100%;
+        background-color: #fff;
+    }
+}
+
+#timeCard {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+
+    & div {
+        height: 30%;
+        width: 30%;
+        background: none;
+
+        & h2 {            
+            font-size: 170pt;
+            margin: 0;
+            padding: 0;
+        }        
+
+        & h3 {
+            font-size: 70pt;
+            margin: 0;
+            padding: 0;
+        }
+    }
+}
+
+#mainCards {
+	position: absolute;
+    top: 0px;
+	right: 0px;
+	width: 33%; 
+    height: 100%;    
+    color: #808080;
+}
+
+#supplementaryCards {
+	position: absolute;
+	top: 10px;
+	left: 20px;
+	width: 25%;
+	height: 200px;
+}

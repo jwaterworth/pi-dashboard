@@ -1,30 +1,39 @@
 <html>
 	<head>
-		<link rel="stylesheet" type="text/css" href="styles/styles.css">
+		<link rel="stylesheet" type="text/css" href="dist/assets/css/main.min.css">
 	</head>
 	<body>
 		<div id="images">
-			<img class="bg preload" alt="loading" src="images/firs.jpg"/>
-			<img class="bg current" alt="loading" src="images/newark.jpg" />
-			<img class="bg backup" alt="loading" src="images/wheel.jpg" />
+			<img class="bg preload" alt="loading" src="dist/assets/img/firs.jpg"/>
+			<img class="bg current" alt="loading" src="dist/assets/img/newark.jpg" />
+			<img class="bg backup" alt="loading" src="dist/assets/img/wheel.jpg" />
 		</div>
 		<div class="container">		
 			<div id="mainCards" data-bind="template: { name: 'CardTemplate', foreach: mainCards}">				
 			</div>
 			<div id="supplementaryCards" data-bind="template: { name: 'CardTemplate', foreach: supplementaryCards}">				
 			</div>
+            <div id="timeCard" >
+                <div data-bind="template: { name: 'TimeCardTemplate', data: timeCard }">
+                </div>
+            </div>
 		</div>
 		</div>
 	</body>
 	<!-- Templates -->
 	<!-- Card Template -->
 	<script type="text/html" id="CardTemplate">
-		<div class="card" data-bind="template: templateName ">			
-		</div>
+		<div class="card" >
+            <div class="header">
+                <h3 data-bind="text: cardName"></h3>
+            </div>
+            <div class="body" data-bind="template: templateName ">
+            </div>
+        </div>
 	</script>
 	
 	<!-- Time Card Contents -->
-	<script type="text/html" id="TimeCardTemplate">
+	<script type="text/html" id="TimeCardTemplate">            
 		<h2 data-bind="text: time"></h2>
 		<h3 data-bind="text: date"></h3>
 	</script>
@@ -32,8 +41,7 @@
 	<!-- Maps Card Contents-->
 
 
-	
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-	<script src="scripts/knockout-3.4.0.js"></script>
-	<script src="scripts/script.js"></script>
+	<script src="bower_components/jquery/dist/jquery.min.js"></script>
+	<script src="bower_components/knockout/dist/knockout.js"></script>
+	<script src="dist/assets/js/main.js"></script>
 </html>

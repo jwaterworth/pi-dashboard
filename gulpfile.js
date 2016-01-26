@@ -1,89 +1,76 @@
-// Load plugins
 var gulp = require('gulp'),
+    bower = require('gulp-bower'),
     sass = require('gulp-ruby-sass'),
     autoprefixer = require('gulp-autoprefixer'),
-    minifycss = require('gulp-minify-css'),
+    cssnano = require('gulp-cssnano'),
     jshint = require('gulp-jshint'),
     uglify = require('gulp-uglify'),
+    imagemin = require('gulp-imagemin'),
     rename = require('gulp-rename'),
-    clean = require('gulp-clean'),
-    concat = require('gulp-concat');
-
-
-// Styles
+    concat = require('gulp-concat'),
+    notify = require('gulp-notify'),
+    cache = require('gulp-cache'),
+	gulpFilter = require('gulp-filter'),
+    livereload = require('gulp-livereload'),
+    del = require('del');
+	
 gulp.task('styles', function() {
-  return gulp.src('styles/main.scss')
-    .pipe(sass({ style: 'expanded', }))
-    .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'))
-    .pipe(gulp.dest('dist/styles'))
-    .pipe(rename({ suffix: '.min' }))
-    .pipe(minifycss())
-    .pipe(livereload(server))
-    .pipe(gulp.dest('dist/styles'))
+  return sass('src/styles/main.scss', { style: 'expanded' })
+    .pipe(autoprefixer('last 2 version'))
+    .pipe(gulp.dest('dist/assets/css'))
+    .pipe(rename({suffix: '.min'}))
+    .pipe(cssnano())
+    .pipe(gulp.dest('dist/assets/css'))
     .pipe(notify({ message: 'Styles task complete' }));
 });
 
-// Scripts
 gulp.task('scripts', function() {
-  return gulp.src('scripts/**/*.js')
+  return gulp.src('src/scripts/**/*.js')
     .pipe(jshint('.jshintrc'))
     .pipe(jshint.reporter('default'))
     .pipe(concat('main.js'))
-    .pipe(gulp.dest('dist/scripts'))
-    .pipe(rename({ suffix: '.min' }))
+    .pipe(gulp.dest('dist/assets/js'))
+    .pipe(rename({suffix: '.min'}))
     .pipe(uglify())
-    .pipe(livereload(server))
-    .pipe(gulp.dest('dist/scripts'))
+    .pipe(gulp.dest('dist/assets/js'))
     .pipe(notify({ message: 'Scripts task complete' }));
 });
 
-// Images
 gulp.task('images', function() {
-  return gulp.src('images/**/*')
-    .pipe(cache(imagemin({ optimizationLevel: 3, progressive: true, interlaced: true })))
-    .pipe(livereload(server))
-    .pipe(gulp.dest('dist/images'))
+  return gulp.src('src/images/**/*')
+    .pipe(imagemin({ optimizationLevel: 3, progressive: true, interlaced: true }))
+    .pipe(gulp.dest('dist/assets/img'))
     .pipe(notify({ message: 'Images task complete' }));
 });
 
-// Clean
 gulp.task('clean', function() {
-  return gulp.src(['dist/styles', 'dist/scripts', 'dist/images'], {read: false})
-    .pipe(clean());
+    return del(['dist/assets/css', 'dist/assets/js', 'dist/assets/img']);
 });
 
-// Default task
 gulp.task('default', ['clean'], function() {
-    gulp.run('styles', 'scripts', 'images');
+    gulp.start('styles', 'scripts', 'images');
 });
 
-// Watch
 gulp.task('watch', function() {
 
-  // Listen on port 35729
-  server.listen(35729, function (err) {
-    if (err) {
-      return console.log(err)
-    };
+  // Watch .scss files
+  gulp.watch('src/styles/**/*.scss', ['styles']);
 
-    // Watch .scss files
-    gulp.watch('styles/**/*.scss', function(event) {
-      console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
-      gulp.run('styles');
-    });
+  // Watch .js files
+  gulp.watch('src/scripts/**/*.js', ['scripts']);
 
-    // Watch .js files
-    gulp.watch('scripts/**/*.js', function(event) {
-      console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
-      gulp.run('scripts');
-    });
-
-    // Watch image files
-    gulp.watch('images/**/*', function(event) {
-      console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
-      gulp.run('images');
-    });
-
-  });
+  // Watch image files
+  gulp.watch('src/images/**/*', ['images']);
 
 });
+ 
+var config = {
+     bowerDir: './bower_components'
+}
+ 
+gulp.task('bower-get', function() {
+    return bower()
+        .pipe(gulp.dest(config.bowerDir))
+});
+ 
+//gulp.task('default', ['bower']);
