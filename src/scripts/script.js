@@ -1,7 +1,12 @@
 
 'use strict';
 
-var cached = 'dist/assets/img/lincoln.jpg';
+var cached = [
+    'dist/assets/img/lincoln.jpg',
+    "dist/assets/img/firs.jpg",
+    "dist/assets/img/newark.jpg",
+    "dist/assets/img/wheel.jpg"
+];
 
 var Card = (function() {	
     //Constructor
@@ -28,7 +33,7 @@ var DateTimeCard = (function(parent) {
         this.time = ko.observable(this.getTime());
         this.date = ko.observable(this.getDate());
 
-        setInterval(self.refresh.bind(self), 5000);
+        setInterval(self.refresh.bind(self), 200);
         parent.call(this, 'Time', 'TimeCardTemplate');
     }
 
@@ -47,7 +52,8 @@ var DateTimeCard = (function(parent) {
 
 	    if (hours < 10) { hours = '0' + hours; }
 	    if (minutes < 10) { minutes = '0' + minutes; }
-	    var time = hours + ':' + minutes;
+	    if (seconds < 10) { seconds = '0' + seconds; }
+	    var time = hours + ':' + minutes + ':' + seconds
 	    return time;
 	};
 	
@@ -74,7 +80,8 @@ var DateTimeCard = (function(parent) {
 var viewModel = {
 	mainCards: ko.observableArray(),
 	supplementaryCards: ko.observableArray(),
-    timeCard: ko.observable(),
+	timeCard: ko.observable(),
+    images: ko.observableArray(cached),
 };
 		
 $(document).ready(function() {
@@ -85,10 +92,20 @@ $(document).ready(function() {
 	viewModel.mainCards.push(new DateTimeCard());
 	viewModel.supplementaryCards.push(new DateTimeCard());
 	viewModel.supplementaryCards.push(new DateTimeCard());
-	
+    	
 	ko.applyBindings(viewModel);
-		
-	setInterval(function() {		
+	
+	var currIndex = 0;
+    
+	setInterval(function () {
+	    viewModel.images().splice(0, 1);
+	    viewModel.images.push(cached[currIndex]);
+
+	    if (currIndex == cached.length - 1) {
+	        currIndex = 0;
+	    }
+
+	    return;
 		var $preload = $('.bg.preload');
 		var $current = $('.bg.current');
 		var $backup = $('.bg.backup');
@@ -108,5 +125,5 @@ $(document).ready(function() {
 				cached = temp;
 			}					
 		}($current, $backup), 1000);
-	}, 3000);
+	}, 6000);
 });

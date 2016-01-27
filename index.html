@@ -3,10 +3,8 @@
 		<link rel="stylesheet" type="text/css" href="dist/assets/css/main.min.css">
 	</head>
 	<body>
-		<div id="images">
-			<img class="bg preload" alt="loading" src="dist/assets/img/firs.jpg"/>
-			<img class="bg current" alt="loading" src="dist/assets/img/newark.jpg" />
-			<img class="bg backup" alt="loading" src="dist/assets/img/wheel.jpg" />
+		<div id="images" data-bind="foreach: images">
+			<img class="bg preload" alt="loading" data-bind="attr: { src: $data }"/>
 		</div>
 		<div class="container">		
 			<div id="mainCards" data-bind="template: { name: 'CardTemplate', foreach: mainCards}">				
